@@ -97,7 +97,7 @@ export async function filterPagination<T = any>(
     .then((data) => ({
       data,
       pagination: {
-        pageNumber: options.page,
+        page: options.page,
         pageSize: options.limit,
         total: count,
         totalPages: (count % options.limit === 0) ? count / options.limit
