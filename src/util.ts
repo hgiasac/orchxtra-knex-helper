@@ -26,3 +26,7 @@ export function isUUID(input: string): boolean {
 
   return regexp.test(input);
 }
+
+export function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  return new Buffer(buffer).toString("base64");
+}
