@@ -11,7 +11,6 @@ export interface IPaginationInfo {
   page: number;
   pageSize: number;
   total: number;
-  totalPages: number;
 }
 
 export interface IPagingResult<T> {
@@ -35,8 +34,6 @@ export enum UserStatusErrorCode {
   Disabled = "user_disabled",
   Deleted = "user_deleted"
 }
-
-export const DefaultPageSize = 20;
 
 export function applyOrder(
   query: Knex.QueryBuilder, orderBy: string[][]): Knex.QueryBuilder {
@@ -64,44 +61,47 @@ export async function filterPagination<T = any>(
     offset: 0,
     ...pagingParams,
     page: page > 1 ? page : 1,
-    limit: (pagingParams && pagingParams.pageSize) ? safeParseInt(pagingParams.pageSize) : DefaultPageSize,
+    limit: (pagingParams && pagingParams.pageSize) ? safeParseInt(pagingParams.pageSize) : 0,
   };
 
-  options.offset = options.offset || ((options.page - 1) * options.limit);
+  let results = [];
+  let count = 0;
 
-  const count: number = await query
-    .clone()
-    .count(`${tableName}.${idColumn}`)
-    .then((result: any[]) => parseInt(result[0].count, 10));
+  if (!options.limit) {
 
-  if (count <= options.offset) {
-    return {
-      data: [],
-      pagination: {
-        page: options.page,
-        pageSize: options.limit,
-        total: count,
-        totalPages: (count % options.limit === 0) ? count / options.limit
-          : (Math.floor(count / options.limit) + 1),
-      }
-    };
+    results = await applyOrder(query, options.orderBy);
+    count = results.length;
+  } else {
+    options.offset = options.offset || ((options.page - 1) * options.limit);
+
+    count = await query
+      .clone()
+      .count(`${tableName}.${idColumn}`)
+      .then((result: any[]) => parseInt(result[0].count, 10));
+
+    if (count <= options.offset) {
+      return {
+        data: [],
+        pagination: {
+          page: options.page,
+          pageSize: options.limit,
+          total: count,
+        }
+      };
+    }
+
+    results = await applyOrder(query
+      .offset(options.offset)
+      .limit(options.limit), options.orderBy);
+
   }
 
-  let filterQuery = query
-    .offset(options.offset)
-    .limit(options.limit);
-
-  filterQuery = applyOrder(filterQuery, options.orderBy);
-
-  return filterQuery
-    .then((data) => ({
-      data,
-      pagination: {
-        page: options.page,
-        pageSize: options.limit,
-        total: count,
-        totalPages: (count % options.limit === 0) ? count / options.limit
-          : (Math.floor(count / options.limit) + 1),
-      }
-    }));
+  return {
+    data: results,
+    pagination: {
+      page: options.page,
+      pageSize: options.limit,
+      total: count,
+    }
+  };
 }

@@ -7,3 +7,7 @@ export interface IBaseModel {
   history: IHistoryMeta;
   status: StatusCode;
 }
+
+export interface IUpdateOptions {
+  updatedBy: string;
+}
