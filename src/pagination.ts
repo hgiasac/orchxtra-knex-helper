@@ -3,7 +3,7 @@ import { safeParseInt } from "./util";
 
 export interface IPagingParams {
   page?: string | number;
-  pageSize?: string | number;
+  pageSize?: string | number | boolean;
   orderBy?: string[][];
 }
 
@@ -61,7 +61,7 @@ export async function filterPagination<T = any>(
     offset: 0,
     ...pagingParams,
     page: page > 1 ? page : 1,
-    limit: (pagingParams && pagingParams.pageSize) ? safeParseInt(pagingParams.pageSize) : 0,
+    limit: (pagingParams && pagingParams.pageSize) ? safeParseInt(<string> pagingParams.pageSize) : 0,
   };
 
   let results = [];
