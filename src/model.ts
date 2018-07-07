@@ -1,4 +1,4 @@
-import { IHistoryMeta } from "./history";
+import { IHistoryMeta, UpdateAction } from "./history";
 import { StatusCode} from "./util";
 
 export interface IBaseModel {
@@ -10,4 +10,6 @@ export interface IBaseModel {
 
 export interface IUpdateOptions {
   updatedBy: string;
+  note?: string;
+  action?: UpdateAction;
 }

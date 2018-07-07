@@ -72,3 +72,15 @@ export function createFileTable(knex: Knex, schemaName: string, tableName: strin
       table.index(["subjectId", "status"]);
     });
 }
+
+export function rollbackAllMigrations(
+  knex: Knex, config?: Knex.MigratorConfig): Promise<any> {
+
+  const migrate = knex.migrate;
+
+  return (<any> migrate).forceFreeMigrationsLock()
+    .then(() => migrate.currentVersion(config))
+    .then((migration) => migration !== "none"
+          ? migrate.rollback(config).then(() => rollbackAllMigrations(knex, config))
+          : Promise.resolve());
+}
