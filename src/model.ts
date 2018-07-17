@@ -13,3 +13,17 @@ export interface IUpdateOptions {
   note?: string;
   action?: UpdateAction;
 }
+
+export interface IFileModelInput {
+  subjectId: string;
+  name: string;
+  description?: string;
+  fileName: string;
+  fileData: string;
+  fileExtension: string;
+}
+
+export interface IFileModel extends IFileModelInput, IBaseModel {
+  id: string;
+  status: StatusCode;
+}
