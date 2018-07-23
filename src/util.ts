@@ -9,7 +9,8 @@ export function safeParseInt(input: number | string, radix = 10): number {
   return typeof input === "number" ? input : parseInt(input, radix);
 }
 
-export function safeParseJSON<T>(input: string | T, defaultValue = {}): T {
+export function safeParseJSON<T>(
+  input: string | T, defaultValue = {}): T {
 
   try {
     const result = typeof input === "string" ? JSON.parse(input) : input;

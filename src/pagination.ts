@@ -47,11 +47,17 @@ export async function filterPagination<T = any>(
   table: string | {
     tableName: string;
     idColumn: string;
+    selectColumns: string[]
   },
-  query: Knex.QueryBuilder, pagingParams?: IPagingParams): Promise<IPagingResult<T>> {
+  query: Knex.QueryBuilder,
+  pagingParams?: IPagingParams,
 
-  const { tableName, idColumn } = typeof table === "string"
-    ? { tableName: table, idColumn: "id" } : table;
+): Promise<IPagingResult<T>> {
+
+  const { tableName, idColumn, selectColumns } =
+    typeof table === "string"
+    ? { tableName: table, idColumn: "id", selectColumns: null }
+    : table;
 
   const page = (pagingParams && pagingParams.page) ? safeParseInt(pagingParams.page) : 1;
   const options = {
@@ -88,6 +94,10 @@ export async function filterPagination<T = any>(
           total: count,
         }
       };
+    }
+
+    if (selectColumns && selectColumns.length) {
+      query = query.select(selectColumns);
     }
 
     results = await applyOrder(query
