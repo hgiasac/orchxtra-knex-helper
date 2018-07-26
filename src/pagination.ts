@@ -83,7 +83,8 @@ export async function filterPagination<T = any>(
     count = await query
       .clone()
       .count(`${tableName}.${idColumn}`)
-      .then((result: any[]) => parseInt(result[0].count, 10));
+      .then((result: any[]) =>
+        result.length ? parseInt(result[0].count, 10) : 0);
 
     if (count <= options.offset) {
       return {
