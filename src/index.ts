@@ -4,3 +4,4 @@ export * from "./model";
 export * from "./util";
 export * from "./migration";
 export * from "./serializers";
+export * from "./builder";
