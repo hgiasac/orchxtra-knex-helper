@@ -4,6 +4,11 @@ export enum StatusCode {
   Deleted = "deleted"
 }
 
+export enum HistoryStatus {
+  Pending = "pending",
+  Approved = "approved",
+}
+
 export function safeParseInt(input: number | string, radix = 10): number {
 
   return typeof input === "number" ? input : parseInt(input, radix);
