@@ -6,6 +6,7 @@ export enum StatusCode {
 
 export enum HistoryStatus {
   Pending = "pending",
+  Rejected = "rejected",
   Approved = "approved",
 }
 

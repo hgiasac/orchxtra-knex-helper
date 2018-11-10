@@ -4,7 +4,7 @@ import { StatusCode} from "./util";
 export interface IBaseModel {
   createdAt: Date;
   updatedAt: Date;
-  history: IHistoryMeta;
+  history?: IHistoryMeta;
   status: StatusCode;
 }
 
