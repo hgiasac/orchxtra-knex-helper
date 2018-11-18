@@ -43,6 +43,17 @@ export function applyOrder(
       qur.orderBy(ord[0], ord[1] || "asc") , query) : query;
 }
 
+export function PagingResult() {
+  return {
+    data: [],
+    pagination: {
+      page: 1,
+      pageSize: 0,
+      total: 0,
+    }
+  };
+}
+
 export async function filterPagination<T = any>(
   table: string | {
     tableName: string;
