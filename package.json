@@ -16,14 +16,16 @@
   "author": "Toan Nguyen",
   "license": "ISC",
   "dependencies": {
-    "@types/knex": "^0.14.9",
-    "knex": "^0.14.4"
+    "@types/knex": "*"
+  },
+  "peerDependencies": {
+    "knex": "*"
   },
   "devDependencies": {
-    "tslint": "^5.9.1",
-    "tslint-consistent-codestyle": "^1.13.0",
-    "tslint-eslint-rules": "^5.1.0",
-    "typescript": "^2.8.1"
+    "tslint": "^5.11.0",
+    "tslint-consistent-codestyle": "^1.14.1",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.1.6"
   },
   "nyc": {
     "extension": [
